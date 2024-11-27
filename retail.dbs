@@ -1,0 +1,63 @@
+create database RetailDB;
+use RetailDB;
+create table products(id int primary key auto_increment,
+name varchar(50) not null,
+price decimal(10,2) not null check(price > 0),
+stock int not null check(stock >= 0 ));
+insert into products values(101,'Wireless Mouse', 29.99, 150),
+(102,'Gaming Keyboard', 89.99, 75),
+(103,'USB-C Charging Cable', 12.50, 300),
+(104,'Noise Cancelling Headphones', 199.99, 50);
+select*from products;
+
+/*suppliers table:*/
+create table suppliers(id int primary key auto_increment,
+name varchar(50) not null,
+contact varchar(50));
+insert into suppliers values
+(1001, 'Tech Supply Co.', 'techsupply@example.com'),
+(1002, 'Global Electronics Ltd.', 'contact@globalelectronics.com'),
+(1003, 'Innovative Components', 'sales@innovativeparts.com'),
+(1004, 'Gadget World Distributors', 'info@gadgetworld.com');
+select*from suppliers;
+/*sales table*/
+
+CREATE TABLE sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    date DATE NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    total_price DECIMAL(10,2) NOT NULL
+);
+select*from sales;
+insert into sales values(1,101, '2024-11-20', 2, 59.98),  (2,102, '2024-11-21', 1, 89.99),  (3,103, '2024-11-21', 5, 62.50),(4,104, '2024-11-22', 1, 199.99);
+select*from sales;
+
+#queries/;
+/*Show products with stock less than 10*/
+select*from products where stock < 60;
+/*List sales with product names and total prices*/
+select
+sales.id as sale_id,
+products.name as product_name,
+sales.quantity,
+(sales.quantity*products.price)
+from
+sales
+join
+products
+on
+sales.product_id = products.id;
+/*Calculate the total sales for each product*/
+select
+    products.name as product_name,
+    SUM(sales.quantity * products.price) AS total_sales
+from
+    sales
+join
+    products
+on
+    sales.product_id = products.id
+group by
+    products.name;
