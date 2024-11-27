@@ -1,0 +1,10 @@
+CREATE DATABASE workshop_db;
+USE workshop_db;
+CREATE TABLE workshop_workers (id INT,name VARCHAR(100),specialization VARCHAR(50),master_id INT,experience INT,project_id INT);
+INSERT INTO workshop_workers values (1,'Mathew Conn','woodworking',null, 20, 1);
+INSERT INTO workshop_workers values (2,'Kate Brown','woodworking',1, 4, 1);
+INSERT INTO workshop_workers values (3,'John Doe','incrusting',5, 3, 1);
+INSERT INTO workshop_workers values (4,'John Kowalsky','watchmaking',7, 2, 3);
+INSERT INTO workshop_workers values (5,'Suzan Gregowitch','incrusting',null, 15, 4);
+select* from workshop_workers;
+SELECT apprentice.name AS apprentice_name,master.name AS master_name FROM workshop_workers apprentice JOIN workshop_workers master ON apprentice.master_id = master.id;
